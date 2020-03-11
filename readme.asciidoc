@@ -1,1 +1,163 @@
+= Seviye 0. Başlığı
 
+Yazılım tasarım kalıpları dersi ödevinin 0. seviye başlığı
+
+== Seviye 1. Başlığı
+
+Yazılım tasarım kalıpları dersi ödevinin 1. seviye başlığı
+
+=== Seviye 2. Başlığı
+
+Yazılım tasarım kalıpları dersi ödevinin 2. seviye başlığı
+
+.Numarasız Liste
+* Günümüzün en dominant işletim sistemi çekirdeklerinden biri olan Linux, bulut sistemlerinde, IoT (Internet of Things)’de ve mobil sistemlerde çokça kullanılıyor.
+* 2018 Yılındayız ve artık devir, süper bilgisayar devri; ancak çok ilginç bir bilgi vermekte yarar var. Dünya üzerindeki en güçlü 500 süper bilgisayar, Linux kullanmakta
+* Günümüzde Linux çekirdeğini kullanan işletim sistemleri büyük bir kitle tarafından genel olarak "Linux" adıyla anılmaktadır. Diğer yandan Özgür Yazılım Vakfı ve çeşitli özgür yazılım toplulukları, bir işletim sistemi olarak Linux'dan bahsederken, GNU araç ve yazılımlarını barındırıyor olması nedeniyle "GNU/Linux" tanımını kullanmaktadır.
+.Numaralı Liste
+. GNU/Linux gelişimi açık bir şekilde yapılmaktadır. Bunun anlamı, işletim sisteminin her aşaması açık olarak Internet üzerinde yayınlanmakta, dünyanın dört bir yanında kullanıcılar tarafından test edilmekte, hataları ve eksiklikleri belirlenerek düzeltilmekte ve geliştirilmektedir. Zaman zaman bu deneme aşamaları belirli bir noktada durdurulur ve güvenilir bir işletim sistemi sunulup, geliştirme için ayrı bir seriye devam edilir. Hatalar, anında kullanıcılar tarafından belirlenip rapor edilmekte ve birçok kişinin katkısıyla düzeltilmektedir.
+. Açık kaynaklı bir işletim sistemidir.
+. Linux; işletim sistemi değildir, işletim sistemi çekirdeğidir. Linux çekirdeği, bu çekirdeği kullanan çeşitli "Linux dağıtımları" tarafından kullanıcıya tam teşekkülü bir işletim sistemi olarak sunulurlar. 
+
+
+TIP: Profesyonel İpucu
+
+IMPORTANT: Ders Çalışmayı Unutma
+
+WARNING: Derslerden sonra tekrarını yap
+
+= Links
+
+== External
+
+https://yapbenzet.kocaeli.edu.tr
+
+== With spaces and special characters
+
+link:++https://example.org/?q=[a b]++[URL with special characters]
+
+== Relative
+
+link:yazılımtasarımkalıpları.html[dokuman]
+
+== Link with attributes
+
+https://example.org[Yap Benzet, Kocaeli Universitesi, Bilgisayar Mühendisliği]
+
+== Inline anchors
+
+[#bookmark-b]#Inline anchors linkinin kullanımı.#
+
+== Internal cross references
+
+C++ ın nasıl kullanıldığı derslerden ögren. 
+<<section-titles,sections>>
+
+= Images
+
+== Block
+
+image::manzara.jpg[Manzara]
+
+== Inline
+Click image:manzara.jpg[title="Pause"] Güzel bir manzara istiyorsan tıkla.
+
+== Inline image with positioning role
+
+image:manzara.jpg[Sunset,150,150,role="right"] Cok guzel bir manzara, oyle degil mi ?
+
+== Embedded
+:data-uri:
+
+Manzara
+
+[[Video]]
+= Video
+
+== Block
+
+video::ideo.mp4[][width=640, start=60, end=140, options=autoplay] 
+
+== Embedded Youtube video
+
+video::rPQoq7ThGAU[youtube]
+
+= C++ Source Code
+
+== Inline
+
+C++ programlama dilinde ekrana çıktı yazdırmak için `cout` ve `<<` simgesi bir arada kullanılır.
+
+== Code block with title and syntax highlighting
+
+----
+for(int i=0; i<20; i++)
+    {
+        cout<<i+1<<". notu giriniz: ";
+        cin>>dizi[i];
+
+        t+=dizi[i];
+        system("clear");
+    }
+----
+
+== Linux Bash Script Code
+
+----
+$ chmod 700 hello.sh
+$./hello.sh
+Merhaba Dunya! // Ekran Çıktısı
+----
+
+= Tables (Table with two columns, a header, and two rows of content)
+
+[%header,cols=2*] 
+|===
+|Ogrencilerin Adı
+|Ogrencilerin Soyadı
+
+|Yasin Emir
+|Kutlu
+
+|Hakan
+|Yılmaz
+|===
+
+
+== Inline anchors
+
+[[video-a]] Use a cross reference to link to this location.
+
+== Internal cross references
+
+Links başlığı ile <<Video>> linklerin kullanımını öğrenebilirsin.
+
+= UML Diyagramları
+
+== Usecase Diyagram
+
+[plantuml,format=svg,role=usecase]
+....
+@startuml
+
+(First usecase)
+(Another usecase) as (UC2)  
+usecase UC3
+usecase (Last\nusecase) as UC4
+
+@enduml
+....
+
+== Class Diyagram
+
+[plantuml,format=svg,role=usecase]
+
+....
+@startuml
+Class21 #-- Class22
+Class23 x-- Class24
+Class25 }-- Class26
+Class27 +-- Class28
+Class29 ^-- Class30
+@enduml
+....
