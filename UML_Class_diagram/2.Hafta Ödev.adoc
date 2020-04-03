@@ -1,0 +1,74 @@
+= Havalimanı İşletim Sistemi UML (Yolcular ve Uçuşlar)
+
+[plantuml,sample2,png]
+----
+class Havalimanı {
+ +Uçuş Kodu
+ +HavalimanıKodu
+ +BiletSat()
+ +BiletDeğiştir()
+ #BiletBilgiKaydet()
+}
+class Yolcular
+{
+ + YolcuAdı
+ + YolcuSoyadı
+ - YolcuID
+ #YolcuPassNum
+ +UcagaBin()
+}
+class Uçak
+{
++ int UcakYasi
++ String UcakRengi
++ String HavayoluIsmi
+}
+class KabinEkibi
+{
+ +PilotAdi
+ +PilotSoyadi
+ -PilotID
+ +UcagiKullan()
+}
+class BeklemeAlanları
+{
+-BeklemeAlanKodu
++BeklemeAlanKoduBelirle()
+}
+class Teras
+{
+-TerasAlanKodu
++TerasKoduBelirle()
+}
+class BeklemeSalonu
+{
+-BeklemeSalonuAlanKodu
++BeklemeSalonuAlanKoduBelirle()
+}
+Class Uçuşlar
+{
++VarisNoktasi
+-İrtifaBelirle()
+}
+Interface UçakÖzellikleri
+{
++void Uc()
++void ManevraYap()
++void InisYap()
+}
+Kanat "2"  -left.> Uçak :   <<uçur>> 
+Uçak o-- "2..*" Motor
+Uçak o--  "2" İnisTakimi
+Uçak -up-> Uçuşlar
+BeklemeAlanları "1..*" --*Havalimanı 
+BeklemeAlanları <|-- "1" Teras
+BeklemeAlanları <|-- "1" BeklemeSalonu
+Uçuşlar -Left-> Havalimanı 
+UçakÖzellikleri <. Uçak : <<extends>>
+Yolcular -Left-> Havalimanı
+KabinEkibi .> Uçak :<<use>>
+----
+
+
+
+

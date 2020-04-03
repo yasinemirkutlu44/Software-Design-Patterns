@@ -1,0 +1,74 @@
+= Havalimaný Ýþletim Sistemi UML (Yolcular ve Uçuþlar)
+
+[plantuml,sample2,png]
+----
+class Havalimaný {
+ +Uçuþ Kodu
+ +HavalimanýKodu
+ +BiletSat()
+ +BiletDeðiþtir()
+ #BiletBilgiKaydet()
+}
+class Yolcular
+{
+ + YolcuAdý
+ + YolcuSoyadý
+ - YolcuID
+ #YolcuPassNum
+ +UcagaBin()
+}
+class Uçak
+{
++ int UcakYasi
++ String UcakRengi
++ String HavayoluIsmi
+}
+class KabinEkibi
+{
+ +PilotAdi
+ +PilotSoyadi
+ -PilotID
+ +UcagiKullan()
+}
+class BeklemeAlanlarý
+{
+-BeklemeAlanKodu
++BeklemeAlanKoduBelirle()
+}
+class Teras
+{
+-TerasAlanKodu
++TerasKoduBelirle()
+}
+class BeklemeSalonu
+{
+-BeklemeSalonuAlanKodu
++BeklemeSalonuAlanKoduBelirle()
+}
+Class Uçuþlar
+{
++VarisNoktasi
+-ÝrtifaBelirle()
+}
+Interface UçakÖzellikleri
+{
++void Uc()
++void ManevraYap()
++void InisYap()
+}
+Kanat "2"  -left.> Uçak :   <<uçur>> 
+Uçak o-- "2..*" Motor
+Uçak o--  "2" ÝnisTakimi
+Uçak -up-> Uçuþlar
+BeklemeAlanlarý "1..*" --*Havalimaný 
+BeklemeAlanlarý <|-- "1" Teras
+BeklemeAlanlarý <|-- "1" BeklemeSalonu
+Uçuþlar -Left-> Havalimaný 
+UçakÖzellikleri <. Uçak : <<extends>>
+Yolcular -Left-> Havalimaný
+KabinEkibi .> Uçak :<<use>>
+----
+
+
+
+
