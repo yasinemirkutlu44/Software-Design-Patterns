@@ -1,0 +1,19 @@
+= Singleton Pattern UML
+
+[plantuml,Singleton,png]
+----
+class SingletonMainProgram
+{
++ {Static}ProgramMain()
+}
+class Singleton
+{
+-{Static}Instance:Singleton
+-Singleton()
++{Static}CreateInstance():Singleton
+}
+SingletonMainProgram -> Singleton : <<apply Instance>>
+Singleton -> SingletonMainProgram : <<Return Instance>>
+SingletonMainProgram -left> SingletonMainProgram
+----
+

@@ -1,0 +1,100 @@
+= Singleton Thread Safe Kod Parçasý Açýklamasý
+
+[source,C#]
+----
+
+//SingletonMainProgram.cs Sýnýfý
+
+using System;
+using System.Threading.Tasks; // <1>
+
+namespace Yazýlým_Tasarým_Kalýplarý // <2>
+{
+    class SingletonMainProgram // <3>
+    {
+        static void Main(string[] args)
+        {
+            Parallel.Invoke( // <4>
+                () => PrintAliceMessage(),
+                () => PrintBobMessage()
+                );
+        }
+        private static void PrintAliceMessage() // <5>
+        {
+            SingletonObject aliceMessage =  SingletonObject.CreateInstance; // <6>
+            Console.WriteLine("Authentication requested from Alice");
+        }
+        private static void PrintBobMessage() // <7>
+        {
+            SingletonObject bobMessage =  SingletonObject.CreateInstance;// <8>
+            Console.WriteLine("Authentication responded from Bob");
+        }
+    }
+}
+
+//SingletonObject.cs Sýnýfý
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Yazýlým_Tasarým_Kalýplarý
+{
+    public sealed class SingletonObject
+    {
+        private static SingletonObject singletonInstance = null; // <9> 
+        private static readonly object Instancelock = new object(); // <10>
+        private SingletonObject() // <11>
+        {
+
+        }
+        public static SingletonObject CreateInstance
+        {
+            get
+            {
+                if (singletonInstance == null) // <12>
+                {
+                    lock (Instancelock) // <13>
+                    {
+                        if (singletonInstance == null) // <14>
+                        {
+                            singletonInstance = new SingletonObject(); // <15>
+                        }
+                    }
+                }
+                return singletonInstance; // <16>
+            }
+        }
+    }
+}
+----
+<1> Kütüphane Eriþimi
+
+<2> Namespace Ýsmi
+<3> SingletonMainProgram sýnýfýnýn kod blogunun baþlangýcý.
+<4> Thread yapýsýnýn kurulmasý. 2 Farkýlý methoda görev atamasýnýn yapýlmasý.
+
+<5> PrintAliceMessage () metodunun kurulmasý.
+<6> SingletonObject tipindeki aliceMessage nesnesinin CreateInstance methodundan talep edilmesi.
+
+<7> PrintAliceMessage () metodunun Oluþturulmasý.
+
+<8> SingletonObject tipindeki bobMessage nesnesinin CreateInstance methodundan talep edilmesi.
+
+<9> SingletonObject tipindeki instance'ýn tanýmlanmasý.
+
+<10> Lock (Kitleme) iþlemi için gerekli Instancelock nesnesinin oluþturulmasý.
+
+<11> Private Constructor'ýn oluþturulmasý.
+
+<12> Double Checking iþlemi (Singletoninstance deger kontrolü).
+
+<13> Paylaþýlmýþ kaynaðýn thread ler için kilitlenmesi.
+
+<14> Instance'ýn önceden oluþturulup oluþturulmadýðýnýn kontrolü.
+
+<15> Instance'ýn ilk defa oluþturulduðu durumdaki instance oluþturma kod satýrý.
+
+<16> Oluþturulmuþ instance'ýn geri döndürülüþü.
+
+

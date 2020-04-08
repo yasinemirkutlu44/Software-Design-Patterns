@@ -1,0 +1,22 @@
+= Singleton Pattern (Thread Safe) UML
+
+[plantuml,SingletonThreadSafe,png]
+----
+class SingletonMainProgram
+{
+-{Static}PrintAliceMessage():void
+-{Static}PrintBobMessage():void
++ {Static} Main():Void
+}
+class SingletonObject
+{
+-{Static} singletonInstance:SingletonObject
+-SingletonObject()
++ {Static} CreateInstance():SingletonObject
+}
+SingletonMainProgram -> SingletonObject : <<apply Instance>>
+SingletonObject -> SingletonMainProgram : <<Return Instance>>
+
+SingletonMainProgram -left-> SingletonMainProgram
+
+----
