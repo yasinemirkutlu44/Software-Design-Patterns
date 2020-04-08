@@ -1,0 +1,33 @@
+= Factory Pattern UML
+
+[plantuml,FactoryPattern,png]
+----
+class TransportationFactory
+{
++getVehicle(transportationType:String):Transportation
+}
+class Program
+{
++transportation1 : Transportation
++transportation2 : Transportation
++transportation3 : Transportation
++{Static} Main() : void
+}
+
+Program -> TransportationFactory : <<ask>>
+TransportationFactory -> Transportation: <<Create>>
+
+
+Interface Transportation{
++ TransportProducts() : void
+}
+class Truck
+class Ship
+class Plane
+
+Plane .up-> Transportation : <<extends>>
+Ship .up-> Transportation : <<extends>>
+Truck .up-> Transportation : <<extends>>
+
+
+----
