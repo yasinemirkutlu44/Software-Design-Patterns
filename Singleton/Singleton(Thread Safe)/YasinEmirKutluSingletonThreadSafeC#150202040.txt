@@ -1,0 +1,64 @@
+// SingletonMainProgram
+
+using System;
+using System.Threading.Tasks;
+
+namespace Yazýlým_Tasarým_Kalýplarý
+{
+    class SingletonMainProgram
+    {
+        static void Main(string[] args)
+        {
+            Parallel.Invoke(
+                () => PrintAliceMessage(),
+                () => PrintBobMessage()
+                );
+        }
+        private static void PrintAliceMessage()
+        {
+            SingletonObject aliceMessage = SingletonObject.CreateInstance;
+            Console.WriteLine("Authentication requested from Alice");
+        }
+        private static void PrintBobMessage()
+        {
+            SingletonObject bobMessage = SingletonObject.CreateInstance;
+            Console.WriteLine("Authentication responded from Bob");
+        }
+    }
+}
+
+// SingletonObject.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Yazýlým_Tasarým_Kalýplarý
+{
+    public sealed class SingletonObject
+    {
+        private static SingletonObject singletonInstance = null;
+        private static readonly object Instancelock = new object();
+        private SingletonObject()
+        {
+
+        }
+        public static SingletonObject CreateInstance
+        {
+            get
+            {
+                if (singletonInstance == null) // Double Checking 
+                {
+                    lock (Instancelock) // Paylaþýlmýþ kaynaklarý kitledik (locked). Devamýnda ise Instance oluþturulup oluþturulmadýðýný kontrol ettik.
+                    {
+                        if (singletonInstance == null) // Instance null ise yani önceden oluþturulmamýþsa oluþtur. Eðer degilse oluþturulmuþ olaný return et.
+                        {
+                            singletonInstance = new SingletonObject();
+                        }
+                    }
+                }
+                return singletonInstance;
+            }
+       s }
+    }
+}
