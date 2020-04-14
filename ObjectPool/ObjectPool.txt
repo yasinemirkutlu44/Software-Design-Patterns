@@ -1,0 +1,179 @@
+//PoolManager.cs
+
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Text;
+using static ObjectPool.Collector;
+
+namespace ObjectPool
+{
+    class PoolManager
+    {
+        public static class postmanPool
+        {
+            const int postmanCount = 2;
+
+            private static List<Postman> _available = new List<Postman>();
+            private static List<Postman> _inUse = new List<Postman>();
+            private static List<Postman> _Waiting = new List<Postman>();
+
+            static postmanPool()
+            {
+                for (int i = 1; i <= postmanCount; i++)
+                {
+                    _available.Add(new Postman(i));
+                }
+            }
+
+            public static Postman Getpostman()
+            {
+                lock (_available)
+                {
+                    if (_available.Count != 0)
+                    {
+                        Postman postman = _available[0];
+                        _inUse.Add(postman);
+                        _available.RemoveAt(0);
+                        return postman;
+                    }                 
+                    throw new InvalidOperationException("There is no availability for cargos");
+                }
+            }
+
+            public static void Releasepostman(Postman postman)
+            {
+                Reset(postman);
+
+                lock (_available)
+                {
+                    _available.Add(postman);
+                    _inUse.Remove(postman);
+                }
+            }
+
+            private static void Reset(Postman postman)
+            {
+                if (postman.Carrying != null)
+                {
+                    postman.Drop();
+                }
+
+            }
+        }
+    }
+}
+
+//Postman.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ObjectPool
+{
+     class Collector
+    {
+        public class Postman
+        {
+            public Postman(int postmanID)
+            {
+                PostmanID = postmanID;
+            }
+
+            public void Pick(string item)
+            {
+                Carrying = item;
+            }
+
+            public void Drop()
+            {
+                ShowMessage("Dropped " + Carrying);
+                Carrying = null;
+            }
+
+            public void ShowMessage(string msg)
+            {
+                Console.WriteLine("Postman {0} : {1}", PostmanID, msg);
+            }
+
+            public int PostmanID { get; set; }
+
+            public string CurrentLocation { get; set; }
+
+            public string Carrying { get; set; }
+        }
+    }
+}
+
+//Program.cs
+
+using System;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
+using System.Threading.Tasks;
+using static ObjectPool.Collector;
+using static ObjectPool.PoolManager;
+
+namespace ObjectPool
+{
+    class Program
+    {
+
+        static void Main(string[] args)
+        {
+               
+           Thread th1 = new Thread(new ThreadStart(IslemYap1));
+           Thread th2 = new Thread(new ThreadStart(IslemYap2));
+           Thread th3 = new Thread(new ThreadStart(IslemYap3));
+
+            th1.Start();
+            th1.Join();
+            th2.Start();
+            th3.Start();
+        }
+
+        public static void IslemYap1()
+        {
+            for(int i =0; i<=5;i++)
+            {
+                Postman postmanA = postmanPool.Getpostman();
+                postmanA.Pick("Cargo1");
+                Console.WriteLine("Task 1 started (in Use)");
+                Thread.Sleep(2000);
+                postmanA.Drop();
+                postmanPool.Releasepostman(postmanA);
+                Console.WriteLine("Task 1 complete (Finished)");
+            }
+        }
+        public static void IslemYap2()
+        {
+            for (int i = 0; i <= 5; i++)
+            {
+                Postman postmanB = postmanPool.Getpostman();
+                postmanB.Pick("Cargo2");
+                Console.WriteLine("Task 2 started (in Use)");
+                //Thread.Sleep(1000);
+                postmanB.Drop();
+                postmanPool.Releasepostman(postmanB);
+                Console.WriteLine("Task 2 complete (Finished)");
+            }
+        }
+
+        public static void IslemYap3()
+        {
+            for (int i = 0; i <= 5; i++)
+            {
+                Postman postmanC = postmanPool.Getpostman();
+                postmanC.Pick("Cargo3");
+                Console.WriteLine("Task 3 started (in Use)");
+                Thread.Sleep(4000);
+                postmanC.Drop();
+                postmanPool.Releasepostman(postmanC);
+                Console.WriteLine("Task 3 complete (Finished)");
+            }
+        }
+
+
+    }
+}
