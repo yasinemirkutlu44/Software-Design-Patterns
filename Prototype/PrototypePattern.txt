@@ -1,0 +1,113 @@
+using System;
+
+namespace PrototpyePattern
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("============== SHALLOW COPY ================\n");
+
+            Player player1 = new Player();
+            player1.Name = "Mo Salah";
+            player1.Clubs = "Livepool, Roma, Fiorentina";
+            player1.Nationality = "Egyptian";
+            player1.HomeAddress = new Address()
+            {
+                City = "Liverpool",
+                Country = "England"
+            };
+            player1.KitNumber = new KitID()
+            {
+                kitNumber = 11
+            };
+            Console.WriteLine("\n================Shallow Copy iþleminden önce 1. oyuncunun kayit bilgileri ==========\n");
+            Console.WriteLine("\nPlayer 1: ");
+            Console.WriteLine("Name: " + player1.Name + ", Address: " + player1.HomeAddress.City + " " + player1.HomeAddress.Country + ", Clubs: " + player1.Clubs + " " + ",Kit Number : " + player1.KitNumber.kitNumber);
+            Player player2 = player1.ShallowCopy();
+            player2.Name = "Cenk Tosun";
+            player2.Clubs = "Crystal Palace, Everton, Besiktas";
+            player2.HomeAddress.City = "London";
+            player2.HomeAddress.Country = "England";
+            player2.KitNumber.kitNumber = 20;
+            Console.WriteLine("\n================Shallow Copy iþleminden sonra oyuncularin bilgileri ========== (2. oyuncu 1. oyuncudan klonlandý)\n");
+            Console.WriteLine("\nPlayer 1: ");
+            Console.WriteLine("Name: " + player1.Name + ", Address: " + player1.HomeAddress.City + " " + player1.HomeAddress.Country + ", Clubs: " + player1.Clubs + " " + ",Kit Number : " + player1.KitNumber.kitNumber);
+            Console.WriteLine("\nPlayer 2: ");
+            Console.WriteLine("Name: " + player2.Name + ", Address: " + player2.HomeAddress.City + " " + player2.HomeAddress.Country + ", Clubs: " + player2.Clubs + " " + ",Kit Number : " + player2.KitNumber.kitNumber);
+
+            Console.WriteLine("============== DEEP COPY ================\n");
+
+            Player player3 = new Player();
+            player3.Name = "Mo Salah";
+            player3.Clubs = "Livepool, Roma, Fiorentina";
+            player3.Nationality = "Egyptian";
+            player3.HomeAddress = new Address()
+            {
+                City = "Liverpool",
+                Country = "England"
+            };
+            player3.KitNumber = new KitID()
+            {
+                kitNumber = 11
+            };
+            Console.WriteLine("\n================Deep Copy iþleminden önce 1. oyuncunun kayit bilgileri ==========\n");
+            Console.WriteLine("\nPlayer 1: ");
+            Console.WriteLine("Name: " + player3.Name + ", Address: " + player3.HomeAddress.City + " " + player3.HomeAddress.Country + ", Clubs: " + player3.Clubs + " " + ",Kit Number : " + player3.KitNumber.kitNumber);
+            Player player4 = player3.DeepClone();
+            player4.Name = "Cenk Tosun";
+            player4.Clubs = "Crystal Palace, Everton, Besiktas";
+            player4.HomeAddress.City = "London";
+            player4.HomeAddress.Country = "England";
+            player4.KitNumber.kitNumber = 20;
+            Console.WriteLine("\n================Deep Copy iþleminden sonra oyuncularin bilgileri ========== (2. oyuncu 1. oyuncudan klonlandý)\n");
+            Console.WriteLine("\nPlayer 1: ");
+            Console.WriteLine("Name: " + player3.Name + ", Address: " + player3.HomeAddress.City + " " + player3.HomeAddress.Country + ", Clubs: " + player3.Clubs + " " + ",Kit Number : " + player3.KitNumber.kitNumber);
+            Console.WriteLine("\nPlayer 2: ");
+            Console.WriteLine("Name: " + player4.Name + ", Address: " + player4.HomeAddress.City + " " + player4.HomeAddress.Country + ", Clubs: " + player4.Clubs + " " + ",Kit Number : " + player4.KitNumber.kitNumber);
+
+        }
+    }
+
+    public class Player
+    {
+        public string Name { get; set; }
+        public string Clubs { get; set; }
+        public string Nationality { get; set; }
+        public KitID KitNumber { get; set; }
+        public Address HomeAddress { get; set; }
+        public Player ShallowCopy()
+        {
+            return (Player)this.MemberwiseClone();
+        }
+        public Player DeepClone()
+        {
+            Player player = (Player)this.MemberwiseClone();
+            player.HomeAddress = HomeAddress.DeepCopy();
+            player.KitNumber = KitNumber.DeepCopy();
+            return player;
+        }
+    }
+
+    public class Address
+    {
+        public string City { get; set; }
+        public string Country { get; set; }
+        public Address DeepCopy()
+        {
+            return (Address)this.MemberwiseClone();
+        }
+    }
+
+    public class KitID
+    {
+        public int kitNumber { get; set; }
+        public KitID DeepCopy()
+        {
+            return (KitID)this.MemberwiseClone();
+        }
+    }
+
+
+}
+    
