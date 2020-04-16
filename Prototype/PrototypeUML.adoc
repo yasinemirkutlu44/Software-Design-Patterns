@@ -1,0 +1,30 @@
+= Prototype Design Pattern UML
+
+[plantuml,Prototype,png]
+
+----
+class Program
+{
++player1 : Player
++player2 : Player
++player3 : Player
++player4 : Player
++{Static} Main () : Void
+}
+
+class Player
+{
++ String Name
++ String Clubs
++ String Nationality
++ KitNumber : KitID
++ HomeAddress : Address
++ ShallowCopy() : Player
++ DeepClone() : Player
+}
+
+Program --> Player : <<ask>>
+Player --> Program : <<Return with cloned Object>>
+
+
+----
