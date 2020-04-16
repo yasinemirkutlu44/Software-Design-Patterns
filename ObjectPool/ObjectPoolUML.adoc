@@ -1,0 +1,45 @@
+= Object Pool Design Pattern UML
+
+[plantuml,ObjectPool,png]
+----
+class Program
+{
+Thread th1
+Thread th2
+Thread th3
++{Static} IslemYap1()
++{Static} IslemYap2()
++{Static} IslemYap3()
++{Static} Main() : Void
+}
+
+class PoolManager
+{
++ int const postmanCount
+-{Static} _available : List<Postman> (Used for Lock Process)
+-{Static} _inUse : List<Postman>
++{Static} postmanPool()
++{Static} Getpostman():Postman
++{Static} Releasepostman(postman : Postman) : Void
+- {Static}Reset(postman:Postman):void
+}
+
+class Postman
+{
++int PostmanID
++string Carrying
++Postman(postmanID : int)
++Drop():Void
++Pick(item : string):Void
++ ShowMessage(msg : string):void
+}
+Postman o-- PoolManager
+
+Program --> PoolManager : <<ask for reusable Object >>
+Program --> Postman : <<Use>>
+
+
+
+
+
+----
