@@ -1,0 +1,186 @@
+//Plane.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace BuilderPattern
+{
+    enum UcakTipi
+    {
+        Boeing, Airbus, Embraer
+    }
+    class Plane
+    {
+        public string UcakTipi { get; set; }
+        public string Model { get; set; }
+        public int Menzil { get; set; } 
+        public int MotorSayisi { get; set; }
+        public int KanatAcikligi { get; set; }
+        public int TekerlekSayisi { get; set; }
+        public Boolean EglenceSistemi { get; set; }
+        public override string ToString()
+        {
+            Console.WriteLine($"{UcakTipi} -> Uretici : {UcakTipi}   Model : {Model}  Menzil (Km) : {Menzil}  Motor Sayisi : {MotorSayisi}  Kanat Acikligi (m) : {KanatAcikligi}  Tekerlek Sayisi : {TekerlekSayisi} Eglence Sistemi : {EglenceSistemi}");
+            return base.ToString();
+        }
+    }
+}
+
+
+//AirbusConcreteBuilder.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace BuilderPattern
+{
+    class AirbusConcreteBuilder : PlaneBuilder
+    {
+        public AirbusConcreteBuilder()
+        {
+            plane = new Plane();
+        }
+        public override void SetUreticiTipi() => plane.UcakTipi = UcakTipi.Airbus.ToString();
+        public override void SetModel() => plane.Model = "Airbus A380";
+        public override void SetMenzil() => plane.Menzil = 16200;
+        public override void SetMotorSayisi() => plane.MotorSayisi = 4;
+        public override void SetKanatAcikligi() => plane.KanatAcikligi = 34;
+        public override void SetTekerlekSayisi() => plane.TekerlekSayisi = 16;
+        public override void SetEglenceSistemi() => plane.EglenceSistemi = true;
+
+    }
+}
+
+
+//BoeingConcreteBuilder.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace BuilderPattern
+{
+         class BoeingConcreteBuild : PlaneBuilder
+        {
+            public BoeingConcreteBuild()
+            {
+                plane = new Plane();
+            }
+
+            public override void SetUreticiTipi() => plane.UcakTipi = UcakTipi.Boeing.ToString();
+            public override void SetModel() => plane.Model = "Boeing 737-800";
+            public override void SetMenzil() => plane.Menzil = 5400;
+            public override void SetMotorSayisi() => plane.MotorSayisi = 2;
+            public override void SetKanatAcikligi() => plane.KanatAcikligi = 36;
+            public override void SetTekerlekSayisi() => plane.TekerlekSayisi = 6;
+            public override void SetEglenceSistemi() => plane.EglenceSistemi = false;
+       
+
+    }
+    }
+
+//EmbraerConcreteBuilder.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace BuilderPattern
+{
+    class EmbraerConcreteBuilder : PlaneBuilder
+    {
+        public EmbraerConcreteBuilder()
+        {
+            plane = new Plane();
+        }
+        public override void SetUreticiTipi() => plane.UcakTipi = UcakTipi.Embraer.ToString();
+        public override void SetModel() => plane.Model = "Embraer 190";
+        public override void SetMenzil() => plane.Menzil = 4537;
+        public override void SetMotorSayisi() => plane.MotorSayisi = 2;
+        public override void SetKanatAcikligi() => plane.KanatAcikligi = 36;
+        public override void SetTekerlekSayisi() => plane.TekerlekSayisi = 8;
+        public override void SetEglenceSistemi() => plane.EglenceSistemi = false;
+    }
+}
+
+//PlaneBuilder.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace BuilderPattern
+{
+    abstract class PlaneBuilder
+    {
+        protected Plane plane;
+        public Plane Plane
+        {
+            get
+            {
+                return plane;
+            }
+        }
+        abstract public void SetUreticiTipi();
+        abstract public void SetModel();
+        abstract public void SetMenzil();
+        abstract public void SetMotorSayisi();
+        abstract public void SetKanatAcikligi();
+        abstract public void SetTekerlekSayisi();
+        abstract public void SetEglenceSistemi();
+    }
+}
+
+//PlaneDirector.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace BuilderPattern
+{
+    class PlaneDirector
+    {
+        public void UcakUret(PlaneBuilder planeBuilder)
+        {
+            planeBuilder.SetUreticiTipi();
+            planeBuilder.SetModel();
+            planeBuilder.SetMotorSayisi();
+            planeBuilder.SetMenzil();
+            planeBuilder.SetKanatAcikligi();
+            planeBuilder.SetTekerlekSayisi();
+            planeBuilder.SetEglenceSistemi();
+
+        }
+    }
+}
+
+//Program.cs
+
+using System;
+
+namespace BuilderPattern
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            PlaneBuilder ucakUretici = new BoeingConcreteBuild();
+            PlaneDirector ucakUreticiDemand = new PlaneDirector();
+            ucakUreticiDemand.UcakUret(ucakUretici);
+            ucakUretici.Plane.ToString();
+
+            ucakUretici = new AirbusConcreteBuilder();
+            ucakUreticiDemand.UcakUret(ucakUretici);
+            ucakUretici.Plane.ToString();
+
+            ucakUretici = new EmbraerConcreteBuilder();
+            ucakUreticiDemand.UcakUret(ucakUretici);
+            ucakUretici.Plane.ToString();
+
+
+        }
+    }
+}
