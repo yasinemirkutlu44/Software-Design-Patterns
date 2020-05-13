@@ -1,0 +1,79 @@
+= 150202040 Yasin Emir Kutlu Observer Pattern
+
+
+[plantuml,Observer,png]
+----
+
+package general <<Rectangle>>
+{
+abstract class Subject
+{
++string _brand
++double _worth
+- {static} InstanceLock: object
+-{static} List observers :IObserver
+-Subject()
++Subject(string brand, double worth)
++ string Brand()
++ double Worth()
++ registerObserver(observer : IObserver) : void
++ removeObserver(observer : IObserver) : void
++ registerObserver(observer : IObserver) : void
++ notfiyObservers()
+}
+
+class ConcreteObserver1
+{
++ string _name
++ Subject _subject
++ ConcreteObserver1(name:string)
++ Subject():Subject
+}
+
+class ConcreteObserver2
+{
++ string _name
++ Subject _subject
++ ConcreteObserver2(name:string)
++ Subject():Subject
+}
+
+class ConcreteObserver3
+{
++ string _name
++ Subject _subject
++ ConcreteObserver3(name:string)
++ Subject():Subject
+}
+
+class ConcreteSubject
+{
++ ConcreteSubject(brand,worth:string double)
+}
+
+interface IObserver
+{
++ Update(subject:Subject):void
+}
+ConcreteObserver1 .up.|> IObserver : <<extend>>
+ConcreteObserver2 .up.|> IObserver : <<extend>>
+ConcreteObserver3 .up.|> IObserver : <<extend>>
+ConcreteSubject .up.|> Subject : <<extend>>
+Subject .left.> IObserver : <<use>>
+}
+
+class Program
+{
++ ConcreteSubject concreteSubject
++gözlemci1:ConcreteObserver1
++gözlemci2:ConcreteObserver2
++gözlemci3:ConcreteObserver3
++{Static} Main(): void
+}
+
+Program --> general : << asks >>
+----
+
+
+
+

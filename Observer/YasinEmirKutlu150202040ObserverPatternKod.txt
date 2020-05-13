@@ -1,0 +1,232 @@
+// Subject.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ObserverPattern_ThreadSafe_
+{
+       abstract class Subject
+       {
+        public string _brand;
+        public double _worth;
+        private static readonly object Instancelock = new object();
+
+        private static List<IObserver> observers = new List<IObserver>();
+        private Subject()
+        {
+        }
+        public Subject(string brand, double worth)
+        {
+            this._brand = brand;
+            this._worth = worth;
+        }
+        public void registerObserver (IObserver observer)
+        {
+            if (observer == null) return;
+
+            lock (Instancelock)
+            {          
+                 observers.Add(observer);
+            }
+        }
+
+        public void removeObserver(IObserver observer)
+        {
+            
+                lock (Instancelock)
+                {
+                   observers.Remove(observer);
+                }
+        }
+        public void notifyObservers()
+        {
+            foreach(IObserver observer in observers)
+            {
+                observer.Update(this);
+            }
+
+        }
+
+        public string Brand
+        {
+            get
+            {
+                return _brand;
+            }
+        }
+        public double Worth
+        {
+            get
+            {
+                return _worth;
+            }
+            set
+            {
+                if(_worth != value)
+                {
+                    _worth = value;
+                    notifyObservers();
+                }
+            }
+
+        }
+       }
+}
+
+//ConcreteSubject.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ObserverPattern_ThreadSafe_
+{
+     class ConcreteSubject : Subject
+    {
+        public ConcreteSubject(string brand, double worth) : base(brand, worth)
+        { }
+    }
+}
+
+//IObserver.cs
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ObserverPattern_ThreadSafe_
+{
+    interface IObserver
+    {
+        public void Update(Subject subject);
+    }
+}
+
+//ConcreteObserver1.cs
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ObserverPattern_ThreadSafe_
+{
+     class ConcreteObserver1 : IObserver
+    {
+        public string _name;
+        public Subject _subject;
+
+        public ConcreteObserver1(string name)
+        {
+            this._name = name;
+        }
+
+        public Subject Subject
+        {
+            get { return _subject; }
+            set { _subject = value; }
+        }
+
+        public void Update(Subject subject)
+        {
+            Console.WriteLine("---BILGILENDIRME--- Sayýn " + _name + " " +subject.Brand +  " ýn Superstar ayakkabisi elimize ulasti  " + "fiyati:" + subject.Worth + "TL dir" );
+            Console.Write("\n");
+
+                
+        }
+    }
+}
+//ConcreteObserver2.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ObserverPattern_ThreadSafe_
+{
+     class ConcreteObserver2 : IObserver
+    {
+        public string _name;
+        public Subject _subject;
+
+        public ConcreteObserver2(string name)
+        {
+            this._name = name;
+        }
+
+        public Subject Subject
+        {
+            get { return _subject; }
+            set { _subject = value; }
+        }
+
+        public void Update(Subject subject)
+        {
+            Console.WriteLine("---BILGILENDIRME--- Sayýn " + _name + " " + subject.Brand + " ýn Superstar ayakkabisi elimize ulasti  " + "fiyati:" + subject.Worth + "TL dir");
+            Console.WriteLine("\n");
+        }
+    }
+}
+
+//ConcreteSubject3.cs
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ObserverPattern_ThreadSafe_
+{
+    class ConcreteObserver3 : IObserver
+    {
+        public string _name;
+        public Subject _subject;
+        
+        public ConcreteObserver3 (string name)
+        {
+            this._name = name;
+        }
+
+        public Subject Subject
+        {
+            get { return _subject; }
+            set { _subject = value; }
+        }
+
+        public void Update(Subject subject)
+        {
+            Console.WriteLine("---BILGILENDIRME--- Sayýn " + _name + " " + subject.Brand + " ýn Superstar ayakkabisi elimize ulasti  " + "fiyati:" + subject.Worth + "TL dir");
+            Console.WriteLine("\n");
+        }
+    }
+}
+
+//Program.cs
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace ObserverPattern_ThreadSafe_
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            ConcreteSubject concreteSubject = new ConcreteSubject("Adidas", 150.00);
+            ConcreteObserver1 gözlemci1 = new ConcreteObserver1("A spor dükkani ");
+            ConcreteObserver2 gözlemci2 = new ConcreteObserver2("B spor dükkani ");
+            ConcreteObserver3 gözlemci3 = new ConcreteObserver3("C spor dükkani ");
+            Parallel.Invoke(
+               () => concreteSubject.registerObserver(gözlemci1),
+               () => concreteSubject.registerObserver(gözlemci2),
+               () => concreteSubject.registerObserver(gözlemci3)
+               );
+
+            concreteSubject.Worth = 140.50;
+            concreteSubject.Worth = 130.00;
+            concreteSubject.Worth = 125.00;
+            concreteSubject.removeObserver(gözlemci1);
+
+            concreteSubject.Worth = 110.00;
+
+
+        }
+    }
+}
+
