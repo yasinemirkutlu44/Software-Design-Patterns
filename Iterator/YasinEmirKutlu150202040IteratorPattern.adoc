@@ -1,0 +1,51 @@
+= 150202040 Yasin Emir Kutlu Iterator Pattern
+
+[plantuml,Iterator,png]
+----
+class StudentIIterator
+{
++ int currentIndex
++ StudentAggregate studentAggregate
++ StudentIIterator(studentAggregate : StudentAggregate) : StudentIIterator
+}
+class Student
+{
++ string Adi
++ string Soyadi
++ string ProgramlamaDili
++ in OgrNo
+}
+interface IIterator
+{
++ HasItem() : bool
++ NextItem() : Student
++ GetCurrentItem() : Student 
+}
+interface IAggregate
+{
++ CreateIterator()
+}
+class StudentAggregate
+{
++ Student studentsList
++ Add (student : Student) : void
++ int counter () : int
++ CreateIterator () : Iterator
+}
+class Program 
+{
++ StudentAggregate studentAggregate
++ IIterator iterator
++ {static} Main() : void
+}
+
+IAggregate <|.down. StudentAggregate : <<extend>>
+IIterator <|.down. StudentIIterator : <<extend>>
+StudentAggregate -left-> StudentIIterator : <<create>>
+StudentIIterator --> StudentAggregate : <<return>>
+StudentAggregate ..> Student : <<use>>
+Program -right-> IAggregate
+Program -left-> IIterator
+
+----
+

@@ -1,0 +1,132 @@
+// IIterator.cs
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace IteratorPattern
+{
+    interface IIterator
+    {
+        public bool HasItem();
+        public Student NextItem();
+        public Student GetCurrentItem();
+    }
+}
+
+//StudentIIterator.cs
+using System;
+using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+
+namespace IteratorPattern
+{
+    class StudentIIterator : IIterator
+    {
+        StudentAggregate studentAggregate;
+        public int currentIndex;
+        public StudentIIterator(StudentAggregate studentAggregate) => this.studentAggregate = studentAggregate;
+        public Student GetCurrentItem() => studentAggregate.GetItem(currentIndex);
+        public bool HasItem()
+        {
+            if(currentIndex < studentAggregate.counter)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }   
+        }
+        public Student NextItem()
+        {
+            if (HasItem())
+            {
+                return studentAggregate.GetItem(currentIndex++);
+            }
+            else
+            {
+
+                return new Student();
+            }
+        }
+    }
+}
+//StudentAggregate.cs
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace IteratorPattern
+{
+    class StudentAggregate : IAggregate
+    {
+        List<Student> studentsList = new List<Student>();
+        public void Add(Student student) => studentsList.Add(student);
+        public Student GetItem(int index) => studentsList[index];
+        public int counter { get => studentsList.Count; }
+        public IIterator CreateIterator() => new StudentIIterator(this);
+    }
+}
+
+//IAggregate.cs
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace IteratorPattern
+{
+    interface IAggregate
+    {
+        IIterator CreateIterator();
+    }
+}
+//Student.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace IteratorPattern
+{
+    class Student
+    {
+        public string Adi { get; set; }
+        public string Soyadi { get; set; }
+        public string ProgramlamaDili { get; set; }
+        public int OgrNo { get; set; }
+
+    }
+}
+
+//Program.cs
+using System;
+using System.Security.Cryptography.X509Certificates;
+
+namespace IteratorPattern
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            StudentAggregate studentAggregate = new StudentAggregate(); 
+            studentAggregate.Add(new Student { Adi = "Bayrak", Soyadi = "Alkan", OgrNo = 330646, ProgramlamaDili = "Java,C#,Pyhton" });
+            studentAggregate.Add(new Student { Adi = "Rustu", Soyadi = "Erden", OgrNo = 447757, ProgramlamaDili = "Java,C++" });
+            studentAggregate.Add(new Student { Adi = "Berk", Soyadi = "Burcak", OgrNo = 186893, ProgramlamaDili = "C#,Ruby" });
+            studentAggregate.Add(new Student { Adi = "Volkan", Soyadi = "Yýlmaz", OgrNo = 203329, ProgramlamaDili = "Java,C" });
+            studentAggregate.Add(new Student { Adi = "Yonca", Soyadi = "Keser", OgrNo = 704279, ProgramlamaDili = "Pascal,Pyhton" });
+            studentAggregate.Add(new Student { Adi = "Ahmet", Soyadi = "Bayram", OgrNo = 761658, ProgramlamaDili = "C,C++,C#" });
+            studentAggregate.Add(new Student { Adi = "Hamza", Soyadi = "Tayfur", OgrNo = 125899, ProgramlamaDili = "VisualBasic,PHP,C#" });
+            studentAggregate.Add(new Student { Adi = "Mehmet", Soyadi = "Mujde", OgrNo = 680602, ProgramlamaDili = "JavaScript,C++,C" });
+            studentAggregate.Add(new Student { Adi = "Furkan", Soyadi = "Giray", OgrNo = 924710, ProgramlamaDili = "Ruby,C,R" });
+            studentAggregate.Add(new Student { Adi = "Samet", Soyadi = "Kumaþ", OgrNo = 112612, ProgramlamaDili = "C#,Java,R" });
+
+            IIterator iterator = studentAggregate.CreateIterator();
+            while(iterator.HasItem())
+            {
+                Console.WriteLine("Ogrenci ID :" + iterator.GetCurrentItem().OgrNo + "\n" + "Ogrenci Adý: " + iterator.GetCurrentItem().Adi + "\n" + "Ogrenci Soyadi:" + iterator.GetCurrentItem().Soyadi + "\n" + "Bildigi Programlama Dilleri :" + iterator.GetCurrentItem().ProgramlamaDili+ "\n");
+                iterator.NextItem();
+            }
+        }
+    }
+}
