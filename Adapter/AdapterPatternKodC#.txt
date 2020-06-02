@@ -1,0 +1,128 @@
+// Hedef.cs
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace AdapterPattern
+{
+    public interface Hedef
+    {
+        public List<string> StudentsFetch();
+        public List<string> GPAFetch();
+        public List<string> Gender();
+
+    }
+}
+
+// Adapter.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace AdapterPattern
+{
+    public class Adapter : Adaptee , Hedef
+    { 
+        public List<string> StudentsFetch()
+        {
+            return OgrenciListeGetir();
+        }
+
+        public List<string> GPAFetch()
+        {
+            return OgrenciGNOGetir();
+        }
+
+        public List<string> Gender()
+        {
+            return OgrenciCinsiyetGetir();
+        }
+    }
+}
+
+// Adaptee.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace AdapterPattern
+{
+    public class Adaptee
+    {
+        public List<string> OgrenciListeGetir()
+        {
+            List<string> OgrenciListe = new List<string>();
+            OgrenciListe.Add("Baþvuru yapan 1.Öðrencinin Adý:\n Ahmet Yýldýz \n Ögrenci No: 648723 \n Dogum Yeri : Istanbul \n Yabancý Diller : Ingilizce, Rusça \n Programlama Dilleri : Java, C# \n Okuduðu bölüm : Yazýlým Mühendislði");
+            OgrenciListe.Add("Baþvuru yapan 2.Öðrencinin Adý:\n Ayþe Sumer \n Ögrenci No: 354751 \n Dogum Yeri: Ankara \n Yabancý Diller: Almanca, Ýngilizce \n Programlama Dilleri: C++, C#, Pyhton \n Okuduðu bölüm : Bilgisayar Mühendislði");
+            OgrenciListe.Add("Baþvuru yapan 3.Öðrencinin Adý:\n Ali Yerli \n Ögrenci No: 734781 \n Dogum Yeri: Izmir \n Yabancý Diller: Almanca, Ýngilizce, Japonca \n Programlama Dilleri: Pyhton \n Okuduðu bölüm: Endüstri Mühendislði");
+            OgrenciListe.Add("Baþvuru yapan 4.Öðrencinin Adý:\n Busra Ocak \n Ögrenci No: 397472 \n Dogum Yeri: Kocaeli \n Yabancý Diller: Fransýzca, Ýngilizce \n Programlama Dilleri: C++, C#, Pyhton, Java \n Okuduðu bölüm : Bilgisayar Mühendislði");
+            OgrenciListe.Add("Baþvuru yapan 5.Öðrencinin Adý:\n Ýbrahim Tepe \n Ögrenci No: 193684 \n Dogum Yeri: Antalya \n Yabancý Diller: Çince, Ýngilizce, Arapça \n Programlama Dilleri: C++, C#, Pyhton, C, Javascript \n Okuduðu bölüm : Biliþim Sistemleri Mühendislði");
+            return OgrenciListe;
+        }
+
+        public List<string> OgrenciGNOGetir()
+        {
+            List<string> OgrenciGNO = new List<string>();
+            OgrenciGNO.Add("1. öðrenci GNO : 2.5");
+            OgrenciGNO.Add("2. öðrenci GNO : 3.2");
+            OgrenciGNO.Add("3. öðrenci GNO : 1.85");
+            OgrenciGNO.Add("4. öðrenci GNO : 2.2");
+            OgrenciGNO.Add("5. öðrenci GNO : 3.7");
+            return OgrenciGNO;
+
+        }
+
+        public List<string> OgrenciCinsiyetGetir()
+        {
+            List<string> OgrenciCinsiyet = new List<string>();
+            OgrenciCinsiyet.Add("1. öðrenci Cinsiyet : E");
+            OgrenciCinsiyet.Add("2. öðrenci Cinsiyet : K");
+            OgrenciCinsiyet.Add("3. öðrenci Cinsiyet : E");
+            OgrenciCinsiyet.Add("4. öðrenci Cinsiyet : K");
+            OgrenciCinsiyet.Add("5. öðrenci Cinsiyet : E");
+            return OgrenciCinsiyet;
+
+        }
+
+    }
+}
+
+// Program.cs
+
+using System;
+using System.Linq;
+
+namespace AdapterPattern
+{
+     class Program
+    {
+        public static void Main(string[] args)
+        {
+            Hedef adapter = new Adapter();
+            Hedef adapter2 = new Adapter();
+            Hedef adapter3 = new Adapter();
+
+            Console.WriteLine("-----ÖÐRENCÝ DURUM BÝLGÝLERÝ-----");
+            foreach(string student in adapter.StudentsFetch())
+            {
+                Console.WriteLine(student);
+            }
+
+            Console.WriteLine("-----ÖÐRENCÝ GNO BÝLGÝLERÝ-----");
+            foreach (string gpa in adapter2.GPAFetch())
+            {
+                Console.WriteLine(gpa);
+            }
+
+            Console.WriteLine("-----ÖÐRENCÝ CÝNSÝYET BÝLGÝLERÝ-----");
+            foreach (string gender in adapter3.Gender())
+            {
+                Console.WriteLine(gender);
+            }
+
+        }
+    }
+}
