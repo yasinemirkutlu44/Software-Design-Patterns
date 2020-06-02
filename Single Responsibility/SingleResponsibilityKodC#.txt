@@ -1,0 +1,96 @@
+// Cargo.cs
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace singleResponsibility
+{
+    public class Cargo
+    {
+        public int CargoNumber { get; set; }
+        public string ReceiverName { get; set; }
+        public string ReceiverSurname { get; set; }
+        public string Destination { get; set; }
+    }
+}
+
+//CargoIssues.cs
+using System.Collections.Generic;
+
+namespace singleResponsibility
+{
+    public class CargoIssues
+    {
+        public static List<Cargo> cargos = new List<Cargo>();
+        private static readonly object locked = new object();
+        public void Registration (Cargo cargo)
+        {
+            lock(locked) cargos.Add(cargo);
+        }
+
+        public void Deletion (Cargo cargo)
+        {
+            lock (locked) cargos.Remove(cargo);
+        } 
+
+    }
+}
+// Notify.cs
+using System.Windows;
+
+namespace singleResponsibility
+{
+    public class Notify
+    {
+        public void SendRegistrationNotification()
+        {
+            MessageBox.Show("Kargonuz baþarýyla eklendi(BÝLDÝRÝM)", "Ýþlem tamamlandý", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        public void SendDeletionNotification()
+        {
+            MessageBox.Show("Kargonuz baþarýyla sistemden silindi (BÝLDÝRÝM)", "Ýþlem tamamlandý", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+    }
+}
+//MainWindow.xaml.cs
+using System;
+using System.Windows;
+
+namespace singleResponsibility
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+
+        }
+        Cargo cargo = new Cargo();
+        CargoIssues cargoIssues = new CargoIssues();
+        Notify notify = new Notify();
+
+        private void AddButon_Click(object sender, RoutedEventArgs e)
+        {
+            cargo.CargoNumber = Int32.Parse(txtCargoNumber.Text);
+            cargo.ReceiverName = txtReceiverName.Text;
+            cargo.ReceiverSurname = txtReceiverSurname.Text;
+            cargo.Destination = txtDestination.Text;
+            cargoIssues.Registration(cargo);
+            notify.SendRegistrationNotification();
+        }
+
+        private void DeleteButon_Click(object sender, RoutedEventArgs e)
+        {
+            cargo.CargoNumber = Int32.Parse(txtCargoNumber.Text);
+            cargo.ReceiverName = txtReceiverName.Text;
+            cargo.ReceiverSurname = txtReceiverSurname.Text;
+            cargo.Destination = txtDestination.Text;
+            cargoIssues.Deletion(cargo);
+            notify.SendDeletionNotification();
+        }
+    }
+}
+

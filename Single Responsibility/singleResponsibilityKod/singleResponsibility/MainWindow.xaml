@@ -1,0 +1,27 @@
+﻿<Window x:Class="singleResponsibility.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:singleResponsibility"
+        mc:Ignorable="d"
+        Title="Kargo Kayıt Sistemi" Height="300" Width="300">
+    <Grid x:Name="Grid">
+        <Grid.Background>
+            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF003972" Offset="0"/>
+                <GradientStop Color="#FFB2D9FF" Offset="1"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+        <Label x:Name="lblCargoNumber" Content="Cargo Number" Margin="20,40,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblReceiverName" Content="Receiver Name " Margin="20,70,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblReceiverSurname" Content="Receiver Surname " Margin="20,100,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Label x:Name="lblDestination" Content="Destination " Margin="20,130,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBox x:Name="txtCargoNumber" HorizontalAlignment="Left" Height="26" Margin="125,40,0,0" VerticalAlignment="Top" Width="124" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"  TabIndex="1"/>
+        <TextBox x:Name="txtReceiverName" HorizontalAlignment="Left" Height="26" Margin="125,70,0,0" VerticalAlignment="Top" Width="124" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"  TabIndex="2"/>
+        <TextBox x:Name="txtReceiverSurname" HorizontalAlignment="Left" Height="26" Margin="125,100,0,0" VerticalAlignment="Top" Width="124" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"  TabIndex="3"/>
+        <TextBox x:Name="txtDestination" HorizontalAlignment="Left" Height="26" Margin="125,130,0,0" VerticalAlignment="Top" Width="124" MaxLines="1" MaxLength="24" VerticalContentAlignment="Center"  TabIndex="4"/>
+        <Button x:Name="AddButon" Content="Kargo ekle" HorizontalAlignment="Left" Height="24" Margin="50,200,0,0" VerticalAlignment="Top" Width="70" Click="AddButon_Click"/>
+        <Button x:Name="DeleteButon" Content="Kargo sil" HorizontalAlignment="Left" Height="24" Margin="180,200,0,0" VerticalAlignment="Top" Width="70" Click="DeleteButon_Click"/>
+    </Grid>
+</Window>
