@@ -1,0 +1,157 @@
+// PlaneMessage.cs
+using System;
+using System.Collections.Generic;
+using System.Numerics;
+using System.Text;
+
+namespace ChainOfResponsibility
+{
+    public class PlaneMessage
+    {
+        public string Model { get; set; }
+        public string Year { get; set; }
+        public string Airline { get; set; }
+        public int Budget { get; set; }
+
+        public PlaneMessage(string model, string year,string airline,int budget)
+        {
+            Model = model;
+            Year = year;
+            Airline = airline;
+            Budget = budget;
+
+            Console.WriteLine("Model : " + model + " " + "Year : " + year + " "+ " Airline :" + airline + " " + "icin gerekli koþullar kontrol ediliyor.\n");
+        }
+    }
+}
+
+// Producer.cs
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ChainOfResponsibility
+{
+    abstract class Producer
+    {
+        protected Producer producer;
+        public void BuildChain (Producer producer)
+        {
+            this.producer = producer;
+        }
+
+        public abstract void MakeDemand(PlaneMessage message);
+
+    }
+}
+
+// EngineConcrete.cs
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ChainOfResponsibility
+{
+    class EngineConcrete : Producer
+    {
+        public override void MakeDemand(PlaneMessage message)
+        {
+            if (message.Budget >= 10000)
+            {
+                Console.WriteLine("Model :" + message.Model + "Year:" + message.Year + "Airline :" + message.Airline + " " + "Motor icin islem onaylandi\n");
+                producer.MakeDemand(message);
+            }
+            else if(producer != null)
+            {
+                Console.WriteLine("Model :" + message.Model + "Year:" + message.Year + "Airline :" + message.Airline + " " + "icin islem motor maliyetinden ötürü mümkün olmadýgý icin onaylanmadý\n");
+                producer.MakeDemand(message);
+            }
+          
+        }
+    }
+}
+
+// WingConcrete.cs
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ChainOfResponsibility
+{
+    class WingConcrete : Producer
+    {
+        public override void MakeDemand(PlaneMessage message)
+        {
+            if(message.Budget >= 15000)
+            {
+                Console.WriteLine("Model :" + message.Model + "Year:" + message.Year + "Airline :" + message.Airline + " " + "Kanat icin islem onaylandi\n");
+                producer.MakeDemand(message);
+            }
+            else if (producer != null)
+            {
+                Console.WriteLine("Model :" + message.Model + "Year:" + message.Year + "Airline :" + message.Airline +  " " +"icin islem kanat maliyetinden ötürü mümkün olmadýgý icin onaylanmadý\n");
+                producer.MakeDemand(message);
+            }
+
+        }
+    }
+}
+
+//GearConcrete.cs
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ChainOfResponsibility
+{
+    class GearConcrete : Producer
+    {
+        public override void MakeDemand(PlaneMessage message)
+        {
+            if (message.Budget >= 3000)
+            {
+                Console.WriteLine("Model :" + message.Model + "Year:" + message.Year + "Airline :" + message.Airline + " " + "Ýnis takimi icin islem onaylandi\n");
+            }
+            else
+            {
+                Console.WriteLine("Model :" + message.Model + "Year:" + message.Year + "Airline :" + message.Airline + " " + "icin islem inis takimi maliyetinden ötürü mümkün olmadýgý icin onaylanmadý\n");
+            }
+        }
+    }
+}
+
+//Program.cs
+
+using System;
+using System.Numerics;
+
+namespace ChainOfResponsibility
+{
+    class Program
+    {
+        public static void Main(string[] args)
+        {
+            Producer engineProducer = new EngineConcrete();
+            Producer gearProducer = new GearConcrete();
+            Producer wingProducer = new WingConcrete();
+ 
+            engineProducer.BuildChain(wingProducer);
+            wingProducer.BuildChain(gearProducer);
+
+            PlaneMessage planeMessage = new PlaneMessage("Boeing 737", "2015", "Türk Hava Yollar",8000);
+            engineProducer.MakeDemand(planeMessage);
+
+            planeMessage = new PlaneMessage("Boeing 737", "2017", "Türk Hava Yollar", 1000);
+            engineProducer.MakeDemand(planeMessage);
+
+            planeMessage = new PlaneMessage("Boeing 737", "2018", "Türk Hava Yollar", 50000);
+            engineProducer.MakeDemand(planeMessage);
+
+            planeMessage = new PlaneMessage("Boeing 737", "2019", "Türk Hava Yollar", 20000);
+            engineProducer.MakeDemand(planeMessage);
+
+
+        }
+    }
+}
